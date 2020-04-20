@@ -85,9 +85,10 @@ if (!isset($_SESSION['User'])) {
         <div class="row">
             <div class="col-12">
                 <p class="text-center"><strong>This website contains all informations that you need so as to manage and deliver the best quality of professional internships in ANESP.</strong></p>
-                <p><strong> Select Files to Upload:</strong></p><br><br>
+
             </div>
-            <div class="col-lg-6 ml-auto">
+
+            <div class="col-lg-6 ml-auto mx-auto">
                 <form method="post" enctype="multipart/form-data">
 
                     <input type="file" name="file[]" id="file" multiple>
