@@ -26,25 +26,24 @@
     include './inc/connect.php';
     $msg = "vide";
     if (isset($_POST['submit'])) {
-        if ($_POST['passwd2'] != $_POST['passwd']) {
-            header("location:register.php?msg= Passwords doesn't much");
-        } else {
-
-            $uname = $_POST['uname'];
-            $passwd1 = $_POST['passwd'];
-            $passwd = md5($passwd1);
-            echo $passwd;
-            $email = $_POST['email'];
-            $nom = $_POST['nom'];
-            $prenom = $_POST['prenom'];
+        $uname = $_POST['uname'];
+        $passwd = $_POST['passwd'];
+        $passwd1 = $_POST['passwd2'];
+        $email = $_POST['email'];
+        $nom = $_POST['nom'];
+        $prenom = $_POST['prenom'];
+        if ($passwd == $passwd1) {
+            //create user
+            $passwd = md5($passwd); // hash the passwd for security
             $sql = "INSERT INTO user (nom,prenom,username,password,email) VALUES('$nom','$prenom', '$uname', '$passwd','$email');";
-            $result = mysqli_query($conn, $sql);
-            if ($result) {
-                header("location:register.php");
+            if (mysqli_query($conn, $sql)) {
+                echo "done !!!!!!";
+                header("location:register.php?message= Your request has been sent to the administrator");
             } else {
-                header("location:register.php?invalid= Please enter correct informations");
-                $msg = "Please enter correct informations";
+                echo "echec!!!";
             }
+        } else {
+            header("location:register.php?invalid= The two passwords does not match");
         }
     }
     $conn->close();
@@ -60,22 +59,25 @@
                     <div class="card-body">
 
                         <?php
-                        if ($msg != "vide") {
-
-
+                        if (isset($_GET['invalid'])) {
+                            //afficher un message d'error
                         ?>
-                            <div class="alert-light text-danger text-center py-3">
-                                <?php echo $msg ?>
+                            <div class="alert alert-danger text-center" role="alert">
+                                <?php echo $_GET['invalid'] ?>
                             </div>
                         <?php
-
-
+                        } else if (isset($_GET['message'])) {
+                        ?>
+                            <div class="alert alert-success text-center" role="alert">
+                                <?php echo $_GET['message'] ?>
+                            </div>
+                        <?php
                         }
                         ?>
                         <form method="post">
                             <input type="text" name="nom" placeholder="First Name" class="form-control mb-4 " required>
                             <input type="text" name="prenom" placeholder="Last Name" class="form-control mb-4 " required>
-                            <input type="text" name="email" placeholder="Email" class="form-control mb-4 " required>
+                            <input type="email" name="email" placeholder="Email" class="form-control mb-4 " required>
                             <input type="text" name="uname" placeholder="Username" class="form-control mb-4 " required>
                             <input type="password" name="passwd" placeholder="Password" class="form-control mb-4 " required>
                             <input type="password" name="passwd2" placeholder="Retype Password" class="form-control mb-4 " required>

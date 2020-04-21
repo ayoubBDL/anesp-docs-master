@@ -52,7 +52,7 @@
                 <div class="card col-lg-6" style="border: none;">
                     <img src="./assets/images/favicon.png" alt="logo" class="center" style="width: 60px;display: block;margin-left: auto;margin-right: auto;">
                     <div class="card-title mt-2" id="title">
-                        <h4 class="text-center py-3">Sign in to <span style="color: blue">ANESP</span> documentation platform.<br> Learn to invist in you</h4>
+                        <h4 class="text-center py-3">Sign in to <span style="color: blue">ANESP</span> documentation platform.<br> Learn to invest in you</h4>
                     </div>
                     <div class="card-body">
 

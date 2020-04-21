@@ -112,7 +112,7 @@ if (!isset($_SESSION['User'])) {
                         $targetFilePath = $targetDir . $fileName;
                         if (move_uploaded_file($_FILES["file"]["tmp_name"][$i], $targetFilePath)) {
                             // Insert image file name into database
-                            $sql = "INSERT INTO files (title,date,url,preview_url) VALUES('$fileName','$date_now', '$targetFilePath', 'walo');";
+                            $sql = "INSERT INTO files (title,date,url,preview_url) VALUES('$fileName','$date_now', '$targetFilePath', '##');";
                             if (mysqli_query($conn, $sql)) {
                                 $statusMsg = "The file " . $fileName . " has been uploaded successfully.";
                             } else {
