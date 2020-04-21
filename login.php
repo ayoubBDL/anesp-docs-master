@@ -24,7 +24,6 @@
     <?php
     session_start();
     include './inc/connect.php';
-    $msg = "vide";
     if (isset($_POST['submit'])) {
         if (empty($_POST['uname']) || empty($_POST['passwd'])) {
             header("location:login.php");
@@ -40,7 +39,6 @@
                 header("location:dashboard.php");
             } else {
                 header("location:login.php?invalid= Please enter correct username and password");
-                $msg = "Please enter correct username and password";
             }
         }
     }
@@ -57,12 +55,12 @@
                     <div class="card-body">
 
                         <?php
-                        if ($msg != "vide") {
+                        if (isset($_GET['invalid'])) {
 
 
                         ?>
-                            <div class="card-text">
-                                <?php echo $msg ?>
+                            <div class="alert alert-danger text-center" role="alert">
+                                <?php echo $_GET['invalid'] ?>
                             </div>
                         <?php
 

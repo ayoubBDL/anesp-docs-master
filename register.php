@@ -36,7 +36,7 @@
             //create user
             $passwd = md5($passwd); // hash the passwd for security
             $sql = "INSERT INTO user (nom,prenom,username,password,email) VALUES('$nom','$prenom', '$uname', '$passwd','$email');";
-            if (mysqli_query($conn, $sql)) {
+            if ($conn->query($sql)) {
                 echo "done !!!!!!";
                 header("location:register.php?message= Your request has been sent to the administrator");
             } else {
