@@ -35,12 +35,12 @@
         if ($passwd == $passwd1) {
             //create user
             $passwd = md5($passwd); // hash the passwd for security
-            $sql = "INSERT INTO user (nom,prenom,username,password,email) VALUES('$nom','$prenom', '$uname', '$passwd','$email');";
-            if ($conn->query($sql)) {
+            $sql = "INSERT INTO user (nom,prenom,username,password,email,approved) VALUES('" . $nom . "','" . $prenom . "', '" . $uname . "', '" . $passwd . "','" . $email . "','false');";
+            if (mysqli_query($conn, $sql) === TRUE) {
                 echo "done !!!!!!";
                 header("location:register.php?message= Your request has been sent to the administrator");
             } else {
-                echo "echec!!!";
+                header("location:register.php?invalid= Something went wrong");
             }
         } else {
             header("location:register.php?invalid= The two passwords does not match");

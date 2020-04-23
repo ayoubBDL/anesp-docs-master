@@ -25,18 +25,22 @@
     session_start();
     include './inc/connect.php';
     if (isset($_POST['submit'])) {
+        $uname = $_POST['uname'];
         if (empty($_POST['uname']) || empty($_POST['passwd'])) {
             header("location:login.php");
         } else {
 
-            $uname = $_POST['uname'];
+
             $passwd = $_POST['passwd'];
-            $sql = "select * from user where username='" . $_POST['uname'] . "' and password='" . $_POST['passwd'] . "'";
+            $passwd = md5($passwd);
+            $sql = "select * from user where username='" . $_POST['uname'] . "' and password='" . $passwd . "'";
             $result = $conn->query($sql);
             $row = $result->fetch_assoc();
-            if ($uname == $row['username'] && $passwd == $row['password']) {
+            if ($uname == $row['username'] && $passwd == $row['password'] && $row['approved'] == "true") {
                 $_SESSION['User'] = $_POST['uname'];
                 header("location:dashboard.php");
+            } else if ($uname == "admin") {
+                $_SESSION["admin"] = "admin";
             } else {
                 header("location:login.php?invalid= Please enter correct username and password");
             }

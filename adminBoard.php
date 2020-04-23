@@ -1,13 +1,14 @@
 <?php
 session_start();
-if (!isset($_SESSION['User'])) {
+if ($_SESSION["User"] != "admin") {
     header("location:index.php");
 }
-?>
-<?php
-include 'inc/connect.php';
-?>
+//Anesp!2020
+include './inc/connect.php';
+$message = "";
+ob_start();
 
+?>
 <!DOCTYPE html>
 <html>
 
@@ -85,117 +86,58 @@ include 'inc/connect.php';
         </div>
     </div>
 
-    <div class="container">
-        <div class="row">
-            <div class="col-12">
-                <p class="text-center"><strong>This website contains all informations that you need so as to manage and deliver the best quality of professional internships in ANESP.</strong></p>
-            </div>
-            <?php
-            $req = "select * from user";
-            $result = $conn->query($req);
-            if ($_SESSION['User'] == "admin") {
-            ?>
-                <div class=" mx-auto">
-                    <a href="adminBoard.php" class="btn btn-primary">View Requests</a>
-                </div>
-            <?php  } ?>
-            <div class="col-12">
-                <table id="docsTable">
-                    <thead>
-                        <tr>
-                            <th scope="col">Title</th>
-                            <th scope="col">Upload date</th>
-                            <th scope="col">View</th>
-                            <th scope="col">Download</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <?php
-                        function moment($date)
-                        {
-                            $currentDate = date("y-m-d");
-                            $str1 = explode("-", $currentDate);
-                            $str2 = explode("-", $date);
-                            $year = ("20" . $str1[0]) - $str2[0];
-                            $month = $str1[1] - $str2[1];
-                            $day = $str1[2] - $str2[2];
-                            if ($year > 0) {
-                                if ($year == 1) return "1 year ago";
-                                return $year . " years ago";
-                            } else if ($month > 0) {
-                                if ($month == 1) return "1 month ago";
-                                return $month . " years ago";
-                            } else if ($day > 0) {
-                                if ($day == 1) return "1 day ago";
-                                return $day . " days ago";
-                            } else {
-                                return "today";
-                            }
-                        }
+    <div class="container ">
+        <div class="row align-items-center justify-content-center">
+            <div class=" m-auto col-sm-12 col-lg-12" id="login">
+                <h4 class="text-center py-3">Requests:</h4>
 
-                        $sql = "SELECT * from files ORDER BY id DESC";
-                        $result = $conn->query($sql);
-                        if ($result->num_rows > 0) {
-                            //fetch data from server
-                            while ($row = $result->fetch_assoc()) {
-                                echo "<tr>
-                                                <td scope='row'>" . $row["title"] . "</td>
-                                                <td scope='row'>" . moment($row["date"]) . "</td>
-                                                <td><button onclick='changePreviewUrl(" . $row["id"] . ")' type='button' class='btn btn-primary' data-toggle='modal' data-target='#myModal'><span class='fa fa-eye'></span> Preview</button></td>                                                <td><a class='btn btn-primary' target='_blank' href=" . $row["url"] . "><span class='fa fa-download'></span> Download</a></td>
-                                            </tr>";
-                            }
-                        } else {
-                            echo "0 results";
-                        }
-                        $result->close();
-                        ?>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-
-    <div class="container">
-        <div class="row">
-            <div class="col-11 mx-auto my-4">
-                <h1 class="anesp-slider-title">Documents Preview : </h1>
-                <div id="carouselAnesp" class="carousel slide" data-ride="carousel">
-                    <div class="carousel-inner">
-                        <div class="carousel-item active">
-                            <iframe src="https://drive.google.com/file/d/10qVaPRbdJ3RrSdg-JZ_EmO_-z1OSYser/preview" height="480px" width="100%"></iframe>
-                        </div>
-                        <?php
-                        $sql = "SELECT * from files";
-                        $result = $conn->query($sql);
-                        if ($result->num_rows > 0) {
-                            //fetch data from server
-                            while ($row = $result->fetch_assoc()) {
-                                if ($row["id"] > 1) {
-                                    echo " <div class='carousel-item'>
-                                                                <iframe src='" . $row["preview_url"] . "' height='480px' width='100%'></iframe>
-                                                            </div>";
-                                }
-                            }
-                        } else {
-                            echo "0 results";
-                        }
-                        $result->close();
-                        $conn->close();
-                        ?>
+                <?php
+                if (isset($_SESSION['message'])) {
+                ?>
+                    <div class="alert alert-success text-center" role="alert">
+                        <?php echo $_SESSION['message'] ?>
                     </div>
-                    <a class="carousel-control-prev" href="#carouselAnesp" role="button" data-slide="prev">
-                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                    <a class="carousel-control-next" href="#carouselAnesp" role="button" data-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="sr-only">Next</span>
-                    </a>
-                </div>
+                <?php
+                    unset($_SESSION['message']);
+                }
+                ?>
+                <?php
+                $sql = "select * from user where approved='false'";
+                $result = $conn->query($sql);
+                while ($row = $result->fetch_assoc()) {
+                ?>
+                    <div class=" m-auto card col-lg-6">
+                        <div class="card-body">
+                            <form method="post">
+                                <input type="hidden" name="id" value=".<?php echo $row['id'] ?>.">
+                                <p>Nom: <?php echo $row['nom']; ?></p>
+                                <p>Prenom: <?php echo $row['prenom']; ?></p>
+                                <a class="btn text-center btn-info " href="adminBoard.php?accept=<?php echo $row['id'] ?>">Accept</a>
+                                <a class="btn text-center btn-danger " href="adminBoard.php?decline=<?php echo $row['id'] ?>">Decline</a>
+                            </form>
+                        </div>
+                    </div>
+                <?php
+                }
+                if (isset($_GET['accept'])) {
+                    $id = $_GET['accept'];
+                    $conn->query("UPDATE user SET approved='true' WHERE id=" . $id . ";");
+                    $_SESSION['message'] = "Accepted succefully";
+                    header("location:adminBoard.php");
+                    ob_end_flush();
+                } else if (isset($_GET['decline'])) {
+                    $id = $_GET['decline'];
+                    $conn->query("DELETE FROM user WHERE id=$id") or die($conn->error);
+                    $_SESSION['message'] = "Deleted successfully";
+                    header("location:adminBoard.php");
+                    ob_end_flush();
+                }
+
+                ?>
             </div>
         </div>
     </div>
+
 
 
     <footer id="ember213" class="app-footer app-footer--body ember-view">
