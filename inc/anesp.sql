@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3306
--- Generation Time: Apr 20, 2020 at 09:53 PM
+-- Generation Time: Apr 23, 2020 at 10:17 PM
 -- Server version: 5.7.26
 -- PHP Version: 7.2.18
 
@@ -36,7 +36,7 @@ CREATE TABLE IF NOT EXISTS `files` (
   `url` text NOT NULL,
   `preview_url` text NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COMMENT='Files data base';
+) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COMMENT='Files data base';
 
 --
 -- Dumping data for table `files`
@@ -62,17 +62,20 @@ CREATE TABLE IF NOT EXISTS `user` (
   `nom` varchar(20) NOT NULL,
   `prenom` varchar(20) NOT NULL,
   `username` varchar(20) NOT NULL,
-  `password` varchar(30) NOT NULL,
+  `password` varchar(100) NOT NULL,
   `email` varchar(20) NOT NULL,
+  `approved` varchar(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=17 DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `nom`, `prenom`, `username`, `password`, `email`) VALUES
-(1, 'ayoub', 'bdl', 'ayoub', 'ayoub', 'aboudallaa@gmail.com');
+INSERT INTO `user` (`id`, `nom`, `prenom`, `username`, `password`, `email`, `approved`) VALUES
+(7, 'ayoub', 'boudallaa', 'ayoubgeek', '3092f592c27aa01433b18321f6b13b73', 'aboudallaa@gmail.com', 'true'),
+(8, 'admin', 'admin', 'admin', 'e71aadd914c0fda98d9f380eb2198fea', 'admin@admin', 'true'),
+(15, 'test', 'anesp', 'testAnesp', '098f6bcd4621d373cade4e832627b4f6', 'test@anesp', 'true');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
