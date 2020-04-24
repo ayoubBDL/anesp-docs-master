@@ -24,7 +24,7 @@
     <?php
     session_start();
     include './inc/connect.php';
-    $msg = "vide";
+
     if (isset($_POST['submit'])) {
         $uname = $_POST['uname'];
         $passwd = $_POST['passwd'];
@@ -32,7 +32,17 @@
         $email = $_POST['email'];
         $nom = $_POST['nom'];
         $prenom = $_POST['prenom'];
-        if ($passwd == $passwd1) {
+        $check = "select * from user where username='$uname' or email='$email' limit 1";
+        $result = $conn->query($check);
+        $user = $result->fetch_assoc();
+        if ($user) {
+            if ($user['username'] == $uname) {
+                header("location:register.php?invalid= Username already exists");
+            }
+            if ($user['email'] == $email) {
+                header("location:register.php?invalid= Email already exists");
+            }
+        } else if ($passwd == $passwd1) {
             //create user
             $passwd = md5($passwd); // hash the passwd for security
             $sql = "INSERT INTO user (nom,prenom,username,password,email,approved) VALUES('" . $nom . "','" . $prenom . "', '" . $uname . "', '" . $passwd . "','" . $email . "','false');";
