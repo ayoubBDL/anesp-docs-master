@@ -1,3 +1,11 @@
+<?php
+session_start();
+include './inc/connect.php';
+
+$message = "";
+ob_start();
+
+?>
 <!DOCTYPE html>
 <html>
 
@@ -22,12 +30,12 @@
 
 <body>
     <?php
-    session_start();
-    include './inc/connect.php';
+    
     if (isset($_POST['submit'])) {
         $uname = $_POST['uname'];
         if (empty($_POST['uname']) || empty($_POST['passwd'])) {
             header("location:login.php");
+            ob_end_flush();
         } else {
 
 
@@ -39,10 +47,12 @@
             if ($uname == $row['username'] && $passwd == $row['password'] && $row['approved'] == "true") {
                 $_SESSION['User'] = $_POST['uname'];
                 header("location:dashboard.php");
+                ob_end_flush();
             } else if ($uname == "admin") {
                 $_SESSION["admin"] = "admin";
             } else {
                 header("location:login.php?invalid= Please enter correct username and password");
+                ob_end_flush();
             }
         }
     }
@@ -54,7 +64,7 @@
                 <div class="card col-lg-6" style="border: none;">
                     <img src="./assets/images/favicon.png" alt="logo" class="center" style="width: 60px;display: block;margin-left: auto;margin-right: auto;">
                     <div class="card-title mt-2" id="title">
-                        <h4 class="text-center py-3">Sign in to <span style="color: blue">ANESP</span> documentation platform.<br> Learn to invest in you</h4>
+                        <h4 class="text-center py-3">Sign in to <span style="color: blue">ANESP</span> documentation platform.<br> Learn to invest in yourself</h4>
                     </div>
                     <div class="card-body">
 

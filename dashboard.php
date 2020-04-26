@@ -96,7 +96,7 @@ include 'inc/connect.php';
             if ($_SESSION['User'] == "admin") {
             ?>
                 <div class=" mx-auto">
-                    <a href="adminBoard.php" class="btn btn-primary">View Requests</a>
+                    <a href="./adminBoard.php" class="btn btn-primary">View Requests</a>
                 </div>
             <?php  } ?>
             <div class="col-12">
@@ -141,7 +141,7 @@ include 'inc/connect.php';
                                 echo "<tr>
                                                 <td scope='row'>" . $row["title"] . "</td>
                                                 <td scope='row'>" . moment($row["date"]) . "</td>
-                                                <td><button onclick='changePreviewUrl(" . $row["id"] . ")' type='button' class='btn btn-primary' data-toggle='modal' data-target='#myModal'><span class='fa fa-eye'></span> Preview</button></td>                                                <td><a class='btn btn-primary' target='_blank' href=" . $row["url"] . "><span class='fa fa-download'></span> Download</a></td>
+                                                <td><a href='preview.php?name=" . $row['url'] . "' class='btn btn-primary' ><span class='fa fa-eye'></span> Preview</a></td>                                            <td><a class='btn btn-primary' target='_blank' href=" . $row["url"] . "><span class='fa fa-download'></span> Download</a></td>
                                             </tr>";
                             }
                         } else {

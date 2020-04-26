@@ -101,18 +101,21 @@ if (!isset($_SESSION['User'])) {
                 $date_now = date("Y/m/d");
 
                 // File upload path
-                $targetDir = "media/";
+                $targetDir = "./media/";
 
                 //$fileType = pathinfo($targetFilePath, PATHINFO_EXTENSION);
 
                 if (isset($_POST["submit"]) && !empty($_FILES["file"]["name"])) {
+                    
                     $fileCount = count($_FILES['file']['name']);
                     for ($i = 0; $i < $fileCount; $i++) {
                         $fileName = basename($_FILES["file"]["name"][$i]);
+                        $file_no_ex = substr($fileName, 0 , (strrpos($fileName, ".")));
                         $targetFilePath = $targetDir . $fileName;
+                        $preview_url = "preview.php?name=".$fileName;
                         if (move_uploaded_file($_FILES["file"]["tmp_name"][$i], $targetFilePath)) {
                             // Insert image file name into database
-                            $sql = "INSERT INTO files (title,date,url,preview_url) VALUES('$fileName','$date_now', '$targetFilePath', '##');";
+                            $sql = "INSERT INTO files (title,date,url,preview_url) VALUES('$file_no_ex','$date_now', '$targetFilePath', '$preview_url');";
                             if (mysqli_query($conn, $sql)) {
                                 $statusMsg = "The file " . $fileName . " has been uploaded successfully.";
                             } else {

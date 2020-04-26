@@ -65,7 +65,7 @@ include 'inc/connect.php'
                 </div>
 
                 <div class="modal-body">
-                    <iframe id="preview" width="100%" height="720px"></iframe>
+                    <iframe id="preview" src="preview.php" width="100%" height="720px"></iframe>
                 </div>
 
                 <div class="modal-footer">
@@ -120,10 +120,11 @@ include 'inc/connect.php'
                             //fetch data from server
                             while ($row = $result->fetch_assoc()) {
                                 echo "<tr>
-                                                <td scope='row'>" . $row["title"] . "</td>
-                                                <td scope='row'>" . moment($row["date"]) . "</td>
-                                                <td><button onclick='changePreviewUrl(" . $row["id"] . ")' type='button' class='btn btn-primary' data-toggle='modal' data-target='#myModal'><span class='fa fa-eye'></span> Preview</button></td>                                                <td><a class='btn btn-primary' target='_blank' href=" . $row["url"] . "><span class='fa fa-download'></span> Download</a></td>
-                                            </tr>";
+                                        <td scope='row'>" . $row["title"] . "</td>
+                                        <td scope='row'>" . moment($row["date"]) . "</td>
+                                        <td><a href='preview.php?name=" . $row['url'] . "' class='btn btn-primary' ><span class='fa fa-eye'></span> Preview</a></td>
+                                        <td><a class='btn btn-primary' target='_blank' href=" . $row["url"] . "><span class='fa fa-download'></span> Download</a></td>
+                                    </tr>";
                             }
                         } else {
                             echo "0 results";
@@ -135,6 +136,7 @@ include 'inc/connect.php'
             </div>
         </div>
     </div>
+
 
 
     <div class="container">

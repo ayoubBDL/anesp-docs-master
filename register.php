@@ -1,3 +1,9 @@
+<?php
+session_start();
+include './inc/connect.php';
+ob_start();
+
+?>
 <!DOCTYPE html>
 <html>
 
@@ -22,8 +28,6 @@
 
 <body>
     <?php
-    session_start();
-    include './inc/connect.php';
 
     if (isset($_POST['submit'])) {
         $uname = $_POST['uname'];
@@ -37,10 +41,12 @@
         $user = $result->fetch_assoc();
         if ($user) {
             if ($user['username'] == $uname) {
-                header("location:register.php?invalid= Username already exists");
+                header("location:./register.php?invalid= Username already exists");
+                ob_end_flush();
             }
             if ($user['email'] == $email) {
-                header("location:register.php?invalid= Email already exists");
+                header("location:./register.php?invalid= Email already exists");
+                ob_end_flush();
             }
         } else if ($passwd == $passwd1) {
             //create user
@@ -48,12 +54,15 @@
             $sql = "INSERT INTO user (nom,prenom,username,password,email,approved) VALUES('" . $nom . "','" . $prenom . "', '" . $uname . "', '" . $passwd . "','" . $email . "','false');";
             if (mysqli_query($conn, $sql) === TRUE) {
                 echo "done !!!!!!";
-                header("location:register.php?message= Your request has been sent to the administrator");
+                header("location:./register.php?message= Your request has been sent to the administrator");
+                ob_end_flush();
             } else {
-                header("location:register.php?invalid= Something went wrong");
+                header("location:./register.php?invalid= Something went wrong");
+                ob_end_flush();
             }
         } else {
-            header("location:register.php?invalid= The two passwords does not match");
+            header("location:./register.php?invalid= The two passwords does not match");
+            ob_end_flush();
         }
     }
     $conn->close();

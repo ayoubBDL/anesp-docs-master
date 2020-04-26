@@ -112,6 +112,7 @@ ob_start();
                                 <input type="hidden" name="id" value=".<?php echo $row['id'] ?>.">
                                 <p>Nom: <?php echo $row['nom']; ?></p>
                                 <p>Prenom: <?php echo $row['prenom']; ?></p>
+                                <p>E-mail: <?php echo $row['email']; ?></p>
                                 <a class="btn text-center btn-info " href="adminBoard.php?accept=<?php echo $row['id'] ?>">Accept</a>
                                 <a class="btn text-center btn-danger " href="adminBoard.php?decline=<?php echo $row['id'] ?>">Decline</a>
                             </form>
